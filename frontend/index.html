@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User App</title>
+</head>
+
+<body>
+
+<h2>Add User</h2>
+
+<input id="name" placeholder="name">
+<button onclick="addUser()">Add</button>
+
+<h3>User List</h3>
+
+<ul id="users"></ul>
+
+<script>
+
+const API="/api"
+
+async function loadUsers(){
+
+ const res=await fetch(API+"/users")
+ const data=await res.json()
+
+ const list=document.getElementById("users")
+ list.innerHTML=""
+
+ data.forEach(u=>{
+  const li=document.createElement("li")
+  li.textContent=u.name
+  list.appendChild(li)
+ })
+}
+
+async function addUser(){
+
+ const name=document.getElementById("name").value
+
+ await fetch(API+"/users",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json"
+  },
+  body:JSON.stringify({name})
+ })
+
+ loadUsers()
+}
+
+loadUsers()
+
+</script>
+
+</body>
+</html>
